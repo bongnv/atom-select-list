@@ -2,7 +2,7 @@ import { Disposable, CompositeDisposable, TextEditor, CommandEvent } from 'atom'
 // @ts-ignore Merge https://github.com/atom/etch/pull/90
 import etch from 'etch'
 const $ = etch.dom
-import fuzzaldrin from 'fuzzaldrin'
+import zadeh from 'zadeh'
 
 export type EtchElement = HTMLElement
 type EtchScheduler = any
@@ -324,16 +324,16 @@ export default class SelectListView {
     this.selectIndex(this.props.initialSelectionIndex, updateComponent)
   }
 
-  fuzzyFilter (items: Array<string>, query?: string) {
+  fuzzyFilter(items: Array<string>, query?: string) {
     if (query.length === 0) {
       return items
     } else {
       const scoredItems = []
       for (const item of items) {
         const string = this.props.filterKeyForItem ? this.props.filterKeyForItem(item) : item
-        const score = fuzzaldrin.score(string, query)
+        const score = zadeh.score(string, query)
         if (score > 0) {
-          scoredItems.push({item, score})
+          scoredItems.push({ item, score })
         }
       }
       scoredItems.sort((a, b) => b.score - a.score)
@@ -438,7 +438,7 @@ export default class SelectListView {
 // cjs export for backward compatibility
 module.exports = SelectListView
 
-type ListItemViewProps = { element: EtchElement ; selected: boolean; onclick: () => void }
+type ListItemViewProps = { element: EtchElement; selected: boolean; onclick: () => void }
 
 class ListItemView {
   public element: EtchElement
